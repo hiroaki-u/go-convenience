@@ -49,3 +49,47 @@ func TestCommonSlice(t *testing.T) {
 		})
 	}
 }
+
+func TestDiffSlice(t *testing.T) {
+	tests := []struct {
+		name   string
+		slice1 []int
+		slice2 []int
+		want   []int
+	}{
+		{
+			name:   "slice1がslice2に包含されている",
+			slice1: []int{1, 3, 5},
+			slice2: []int{1, 2, 3, 4, 5},
+			want:   []int{},
+		},
+		{
+			name:   "slice1がslice2を包含している",
+			slice1: []int{1, 2, 3, 4, 5},
+			slice2: []int{1, 3, 5},
+			want:   []int{2, 4},
+		},
+		{
+			name:   "共通している要素がない",
+			slice1: []int{1, 2, 3, 4, 5},
+			slice2: []int{0, 6, 8},
+			want:   []int{1, 2, 3, 4, 5},
+		},
+		{
+			name:   "1つのsliceに共通している要素が複数ある",
+			slice1: []int{1, 2, 3, 3, 4, 5},
+			slice2: []int{1, 1, 6, 8},
+			want:   []int{2, 3, 3, 4, 5},
+		},
+	}
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			got := DiffSlice(tt.slice1, tt.slice2)
+			diff := cmp.Diff(tt.want, got)
+			if diff != "" {
+				t.Errorf("DiffSlice() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
