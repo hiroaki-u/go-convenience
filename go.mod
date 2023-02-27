@@ -1,5 +1,5 @@
-module go-convenience
+module github.com/hiroaki-u/go-convenience
 
 go 1.19
 
-require github.com/google/go-cmp v0.5.9 // indirect
+require github.com/google/go-cmp v0.5.9
