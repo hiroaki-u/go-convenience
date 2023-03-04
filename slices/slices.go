@@ -45,17 +45,19 @@ func DiffSlice[T comparable](slice1, slice2 []T) []T {
 		cmpMap[v] += 1
 	}
 
-	// slice2にある要素をslice2にあるか確認して、なければdiffSliceに格納
+	// slice2にある要素をslice1にあるか確認して、なければdiffSliceに格納
 	for _, v := range slice1 {
 		t, ok := cmpMap[v]
-		if ok {
-			cmpMap[v] -= 1
-			if t == 1 {
-				delete(cmpMap, v)
-			}
+		// slice1の要素がslice2になければ、配列に格納
+		if !ok {
+			diffSlice = append(diffSlice, v)
 			continue
 		}
-		diffSlice = append(diffSlice, v)
+		if t == 1 {
+			delete(cmpMap, v)
+		} else {
+			cmpMap[v] -= 1
+		}
 	}
 	return diffSlice
 }
